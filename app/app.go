@@ -3,11 +3,11 @@ package app
 import (
 	"context"
 	"github.com/main/sandy/watch_dog"
-	"log"
 	"time"
 )
 
 type App struct {
+	ctx     context.Context
 	options Options
 
 	cancelMaxSilenceWatchDog   context.CancelFunc
@@ -29,23 +29,22 @@ type Options struct {
 }
 
 func New(ctx context.Context, opts Options) (*App, error) {
-	app := &App{}
+	app := &App{
+		ctx:     ctx,
+		options: opts,
+	}
 
 	return app, nil
 }
 
 func (a *App) OperationStarted(args ...string) {
-	a.cancelMaxSilenceWatchDog = watch_dog.Watch(context.TODO(), a.options.MaxSilenceTime, func() {
-		log.Println("func1")
-	}, func() {
-		log.Println("func2")
+	a.cancelMaxSilenceWatchDog = watch_dog.Watch(a.ctx, a.options.MaxSilenceTime, func() {}, func() {
+		//TODO: send max silence email
 	})
 
-	a.cancelMaxOperationWatchDog = watch_dog.Watch(context.TODO(), a.options.MaxOperationTime, func() {
-		log.Println("func1")
-	}, func() {
-		log.Println("func2")
-	})
+	a.cancelMaxOperationWatchDog = watch_dog.Watch(a.ctx, a.options.MaxOperationTime, func() {
+		//TODO: send timeout email
+	}, func() {})
 }
 
 func (a *App) OperationFinished() {

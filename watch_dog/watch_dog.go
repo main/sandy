@@ -5,15 +5,17 @@ import (
 	"time"
 )
 
-func Watch(ctx context.Context, limit time.Duration, done, onTimeout func()) context.CancelFunc {
+func Watch(ctx context.Context, limit time.Duration, doneAfterTimeout, onTimeout func()) context.CancelFunc {
 	cont, cancel := context.WithCancel(ctx)
-
+	startTime := time.Now()
 	go func() {
 		ch := time.After(limit)
 
 		select {
 		case <-cont.Done():
-			done()
+			if time.Now().Add(-1 * limit).After(startTime) {
+				doneAfterTimeout()
+			}
 		case <-ch:
 			onTimeout()
 		}
