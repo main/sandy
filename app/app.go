@@ -34,7 +34,7 @@ func New(ctx context.Context, opts Options) *App {
 	}
 }
 
-func (a *App) OperationStarted(templateArgs map[string]string) {
+func (a *App) OperationStarted(templateArgs map[string]interface{}) {
 	a.cancelMaxSilenceWatchDog = watch_dog.Watch(a.ctx, a.options.MaxSilenceTime, func() {}, func() {
 		log.Println("Max silence func")
 		if err := a.mailer.SendMaxSilenceEmails(templateArgs); err != nil {

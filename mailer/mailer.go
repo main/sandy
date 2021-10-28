@@ -32,7 +32,7 @@ func NewMailer(options Options) *Mailer {
 	}
 }
 
-func (m Mailer) SendMaxSilenceEmails(templateArgs map[string]string) error {
+func (m Mailer) SendMaxSilenceEmails(templateArgs map[string]interface{}) error {
 	for _, recipientEmail := range m.options.Receivers {
 		if err := m.sendmail(recipientEmail,
 			fmt.Sprintf("Sandy: Instance %s has reached max silence time", m.options.InstanceName),
@@ -46,7 +46,7 @@ func (m Mailer) SendMaxSilenceEmails(templateArgs map[string]string) error {
 	return nil
 }
 
-func (m Mailer) SendMaxOperationEmails(templateArgs map[string]string) error {
+func (m Mailer) SendMaxOperationEmails(templateArgs map[string]interface{}) error {
 	for _, recipientEmail := range m.options.Receivers {
 		if err := m.sendmail(recipientEmail,
 			fmt.Sprintf("Sandy: Instance %s has exceeded max operation time", m.options.InstanceName),
