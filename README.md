@@ -2,11 +2,15 @@
 Golang library for notifications about slow code execution
 
 # usage
+    go get 	sandy github.com/main/sandy
+    
+    import sandy "github.com/main/sandy/app"
+
 	maxSilenceTime := 5 * time.Second
 	maxOperationTime := 2 * time.Second
 	instanceName := "Auto PG worker"
 
-	sandy := app.New(context.Background(), app.Options{
+	snd := sandy.New(context.Background(), app.Options{
 		MaxSilenceTime:   maxSilenceTime,
 		MaxOperationTime: maxOperationTime,
 		MailerOptions: mailer.Options{
@@ -27,12 +31,12 @@ Golang library for notifications about slow code execution
 	args := make(map[string]string)
 	args["NumberOfPhotos"] = "213"
 
-	sandy.OperationStarted(args)
+	snd.OperationStarted(args)
 
     // ...
 	// do some job
     // ...
 
-	sandy.OperationFinished()
+	snd.OperationFinished()
 
 
